@@ -11,9 +11,12 @@ def Add(a, b):
 
 
 def ReadBfile():
-    with open("./call.cpp","rb") as a:
+    d = "./16k16bit.mp3"
+#    d = "./call.cpp"
+    with open(d,"rb") as a:
         data = a.read()
         a.close()
+        print(len(data))
         return data
 class Test:
     def __init__(self):

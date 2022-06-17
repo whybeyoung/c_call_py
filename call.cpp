@@ -1,4 +1,5 @@
 #include<iostream>
+#include <fstream>
 #include<Python.h>
 using namespace std;
 int main(int argc, char* argv[])
@@ -25,11 +26,26 @@ int main(int argc, char* argv[])
     PyRun_SimpleString("print('----------ReadBfile')");
     PyObject *rFunc =  PyObject_GetAttrString(pModule, "ReadBfile");
     PyObject *pyValue = PyEval_CallObject(rFunc, NULL);
+    Py_ssize_t size = PyBytes_Size(pyValue);
     printf("suncL :%d\n",PyBytes_Check(pyValue));
     char *utf8string;
     PyObject *ret;
+    ofstream outfile;
+    outfile.open("file.dat", ios::out | ios::binary );
+      // 再次向文件写入用户输入的数据
     if (PyBytes_Check(pyValue)){
-       utf8string = PyBytes_AS_STRING(pyValue);
+       int r = PyBytes_AsStringAndSize(pyValue, &utf8string, &size);
+       char d[size];
+       memcpy(d, utf8string, size);
+       int x= strlen(d);
+       int y = sizeof(utf8string);
+       printf("y %d\n",y);
+       printf("$@ %d\n",x);
+      // utf8string = PyBytes_AS_STRING(pyValue);
+         // 再次向文件写入用户输入的数据
+       outfile.write(d, size);
+
+       outfile.close();
     }else{
        ret = PyUnicode_AsUTF8String(pyValue);
        utf8string = strdup(PyBytes_AsString(ret));
@@ -37,7 +53,7 @@ int main(int argc, char* argv[])
     //char *utf8string = PyBytes_AS_STRING(pyValue); 
     printf("%s\n", utf8string);
     
-
+   /**
     //直接获取模块中的函数
     PyRun_SimpleString("print('----------PyObject_GetAttrString')");
     PyObject *pFunc = PyObject_GetAttrString(pModule, "Hello");
@@ -81,6 +97,7 @@ int main(int argc, char* argv[])
     PyArg_Parse(result, "s", &name);
     printf("%s\n", name);
 
+    **/
     PyRun_SimpleString("print('Python End')");
 
     //释放python

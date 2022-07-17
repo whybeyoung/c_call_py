@@ -24,3 +24,10 @@ class Test:
     def SayHello(self, name):
         print ("Hello,", name)
         return name
+
+    @classmethod
+    def why(cls,a,b):
+        print(213)
+        print(a)
+        print(b)
+        return "suc"

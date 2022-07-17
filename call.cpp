@@ -53,6 +53,21 @@ int main(int argc, char* argv[])
     //char *utf8string = PyBytes_AS_STRING(pyValue); 
     printf("%s\n", utf8string);
     
+    //通过字典属性获取模块中的类
+    PyRun_SimpleString("print('----------PyDict_GetItemString test class')");
+    PyObject *pClass = PyDict_GetItemString(pDict, "Test");
+
+
+    PyRun_SimpleString("print('----------PyObject_CallMethod SayHello')");
+
+//    PyObject*  pArg = Py_BuildValue("(s,i)", "hello", 25);
+    PyObject  *result = PyObject_CallMethod(pClass, "why","(s,i)","hello",25);
+    //输出返回值
+    char* name=NULL;
+    PyRun_SimpleString("print('----------PyArg_Parse')");
+    PyArg_Parse(result, "s", &name);
+    printf("%s\n", name);
+
    /**
     //直接获取模块中的函数
     PyRun_SimpleString("print('----------PyObject_GetAttrString')");
@@ -81,9 +96,6 @@ int main(int argc, char* argv[])
     //输出返回值
     printf("a+b=%d\n", c);
 
-    //通过字典属性获取模块中的类
-    PyRun_SimpleString("print('----------PyDict_GetItemString test class')");
-    PyObject *pClass = PyDict_GetItemString(pDict, "Test");
 
     //实例化获取的类
     PyRun_SimpleString("print('----------PyInstanceMethod_New test class')");
